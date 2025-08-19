@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
+import MetaMaskTest from './MetaMaskTest';
 
 // Styled components
 const AppContainer = styled.div`
@@ -70,12 +71,14 @@ function App() {
           <Nav>
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
+            <Link to="/metamask-test">MetaMask Test</Link>
           </Nav>
         </Header>
         <Main>
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/metamask-test" element={<MetaMaskTest />} />
           </Routes>
         </Main>
       </AppContainer>

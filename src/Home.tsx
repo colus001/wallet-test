@@ -24,69 +24,78 @@ const Home = () => {
       <div>SIWE Message: {siweMessage?.prepareMessage()}</div>
       <div>Signature: {signature}</div>
 
-      <button
-        onClick={() => {
-          if (account?.isConnected) {
-            alert('Already connected');
-          } else {
-            appKit.connect();
-          }
+      <div
+        style={{
+          display: 'flex',
+          gap: '10px',
+          flexDirection: 'column',
+          maxWidth: '200px',
         }}
       >
-        {account?.isConnected ? 'Connected' : 'Connect'}
-      </button>
+        <button
+          onClick={() => {
+            if (account?.isConnected) {
+              alert('Already connected');
+            } else {
+              appKit.connect();
+            }
+          }}
+        >
+          {account?.isConnected ? 'Connected' : 'Connect'}
+        </button>
 
-      <button
-        onClick={() => {
-          if (!account?.address) {
-            alert('Please connect your wallet first');
-            return;
-          }
+        <button
+          onClick={() => {
+            if (!account?.address) {
+              alert('Please connect your wallet first');
+              return;
+            }
 
-          setSiweMessage(createAuthenticationNonce(account.address));
-        }}
-      >
-        Create Message
-      </button>
+            setSiweMessage(createAuthenticationNonce(account.address));
+          }}
+        >
+          Create Message
+        </button>
 
-      <button
-        onClick={async () => {
-          if (!siweMessage) {
-            alert('Please sign the message first');
-            return;
-          }
+        <button
+          onClick={async () => {
+            if (!siweMessage) {
+              alert('Please sign the message first');
+              return;
+            }
 
-          const result = await ConnectionController.signMessage({
-            message: siweMessage.prepareMessage(),
-          });
-
-          setSignature(result);
-        }}
-      >
-        Sign Message
-      </button>
-
-      <button
-        onClick={async () => {
-          if (!signature || !siweMessage) {
-            alert('Please sign the message first');
-            return;
-          }
-
-          try {
-            const fields = await new SiweMessage(
-              siweMessage?.prepareMessage()
-            ).verify({
-              signature: signature,
+            const result = await ConnectionController.signMessage({
+              message: siweMessage.prepareMessage(),
             });
-            console.log('fields:', fields);
-          } catch (error) {
-            console.error('error:', error);
-          }
-        }}
-      >
-        Verify Message
-      </button>
+
+            setSignature(result);
+          }}
+        >
+          Sign Message
+        </button>
+
+        <button
+          onClick={async () => {
+            if (!signature || !siweMessage) {
+              alert('Please sign the message first');
+              return;
+            }
+
+            try {
+              const fields = await new SiweMessage(
+                siweMessage?.prepareMessage()
+              ).verify({
+                signature: signature,
+              });
+              console.log('fields:', fields);
+            } catch (error) {
+              console.error('error:', error);
+            }
+          }}
+        >
+          Verify Message
+        </button>
+      </div>
     </div>
   );
 };
