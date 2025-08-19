@@ -1,8 +1,7 @@
-import { crossTestnet } from '@to-nexus/sdk/react';
-import { addMinutes } from 'date-fns';
 import { getAddress } from 'ethers';
 import { useState } from 'react';
-import { generateNonce, SiweMessage } from 'siwe';
+import { SiweMessage } from 'siwe';
+import { createAuthenticationNonce } from './assets/message';
 
 const MetaMaskTest = () => {
   const [account, setAccount] = useState<string | null>(null);
@@ -39,26 +38,7 @@ const MetaMaskTest = () => {
     }
 
     const checksumAddress = getAddress(account);
-    const authenticationNonce = {
-      address: checksumAddress,
-      nonce: generateNonce(),
-      expirationTime: addMinutes(new Date(), 10),
-      message:
-        "I accept the NFT Market's Terms of Service: https://crossnft.io/terms/service",
-    };
-
-    const siweMessage = new SiweMessage({
-      domain: window.location.hostname,
-      address: checksumAddress,
-      uri: window.location.origin,
-      version: '1',
-      chainId: crossTestnet.id,
-      nonce: authenticationNonce.nonce,
-      statement: authenticationNonce.message,
-      expirationTime: new Date(
-        authenticationNonce.expirationTime
-      ).toISOString(),
-    });
+    const siweMessage = createAuthenticationNonce(checksumAddress);
 
     setSiweMessage(siweMessage);
   };

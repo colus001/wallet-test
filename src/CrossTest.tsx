@@ -1,13 +1,12 @@
 import {
   ConnectionController,
-  crossTestnet,
   useAppKit,
   useAppKitAccount,
 } from '@to-nexus/sdk/react';
 // import { useAppKit } from '@to-nexus/sdk/react';
-import { addMinutes } from 'date-fns';
 import { useState } from 'react';
-import { generateNonce, SiweMessage } from 'siwe';
+import { SiweMessage } from 'siwe';
+import { createAuthenticationNonce } from './assets/message';
 
 const CrossTest = () => {
   const [siweMessage, setSiweMessage] = useState<SiweMessage | undefined>(
@@ -87,14 +86,20 @@ const CrossTest = () => {
             }
 
             try {
+              console.log(
+                'siweMessage?.prepareMessage():',
+                siweMessage?.prepareMessage()
+              );
               const fields = await new SiweMessage(
                 siweMessage?.prepareMessage()
               ).verify({
-                signature: signature,
+                signature,
               });
               console.log('fields:', fields);
+              alert('Signature verified');
             } catch (error) {
               console.error('error:', error);
+              alert('Invalid signature');
             }
           }}
         >
@@ -106,26 +111,3 @@ const CrossTest = () => {
 };
 
 export default CrossTest;
-
-function createAuthenticationNonce(address: string) {
-  const authenticationNonce = {
-    address,
-    nonce: generateNonce(),
-    expirationTime: addMinutes(new Date(), 10),
-    message:
-      "I accept the NFT Market's Terms of Service: https://crossnft.io/terms/service",
-  };
-
-  const siweMessage = new SiweMessage({
-    domain: window.location.hostname,
-    address,
-    uri: window.location.origin,
-    version: '1',
-    chainId: crossTestnet.id,
-    nonce: authenticationNonce.nonce,
-    statement: authenticationNonce.message,
-    expirationTime: new Date(authenticationNonce.expirationTime).toISOString(),
-  });
-
-  return siweMessage;
-}
