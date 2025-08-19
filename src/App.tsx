@@ -3,6 +3,7 @@ import { crossTestnet, initCrossSdk } from '@to-nexus/sdk/react';
 import { useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import About from './About';
+import CrossTest from './CrossTest';
 import Home from './Home';
 import MetaMaskTest from './MetaMaskTest';
 
@@ -71,6 +72,7 @@ function App() {
           <Nav>
             <Link to="/">Home</Link>
             <Link to="/about">About</Link>
+            <Link to="/cross-test">Cross Test</Link>
             <Link to="/metamask-test">MetaMask Test</Link>
           </Nav>
         </Header>
@@ -78,6 +80,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
+            <Route path="/cross-test" element={<CrossTest />} />
             <Route path="/metamask-test" element={<MetaMaskTest />} />
           </Routes>
         </Main>

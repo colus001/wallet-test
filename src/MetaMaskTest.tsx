@@ -32,6 +32,7 @@ const MetaMaskTest = () => {
 
   // Create authentication message
   const createMessage = () => {
+    console.log('account:', account);
     if (!account) {
       alert('Please connect your wallet first');
       return;
@@ -105,7 +106,9 @@ const MetaMaskTest = () => {
 
       <div style={{ marginBottom: '20px' }}>
         <div>Account: {account || 'Not connected'}</div>
-        <div>Message: {siweMessage?.prepareMessage()}</div>
+        <div style={{ whiteSpace: 'pre-wrap' }}>
+          Message: {siweMessage?.prepareMessage()}
+        </div>
         <div>Signature: {signature}</div>
       </div>
 
@@ -117,21 +120,15 @@ const MetaMaskTest = () => {
           maxWidth: '200px',
         }}
       >
-        <button onClick={connectWallet} disabled={!!account}>
+        <button onClick={connectWallet}>
           {account ? 'Connected' : 'Connect Wallet'}
         </button>
 
-        <button onClick={createMessage} disabled={!account}>
-          Create Message
-        </button>
+        <button onClick={createMessage}>Create Message</button>
 
-        <button onClick={signMessage} disabled={!siweMessage}>
-          Sign Message
-        </button>
+        <button onClick={signMessage}>Sign Message</button>
 
-        <button onClick={verifyMessage} disabled={!signature}>
-          Verify Message
-        </button>
+        <button onClick={verifyMessage}>Verify Message</button>
       </div>
     </div>
   );
