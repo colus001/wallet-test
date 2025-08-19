@@ -1,4 +1,6 @@
 import styled from '@emotion/styled';
+import { crossTestnet, initCrossSdk } from '@to-nexus/sdk/react';
+import { useEffect, useState } from 'react';
 import { Link, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import About from './About';
 import Home from './Home';
@@ -38,6 +40,29 @@ const Main = styled.main`
 `;
 
 function App() {
+  const [sdk, setSdk] = useState<ReturnType<typeof initCrossSdk> | undefined>(
+    undefined
+  );
+  useEffect(() => {
+    const _sdk = initCrossSdk(
+      'ab32dee70a305921c0bbb353b321da3b',
+      'http://localhost:5174',
+      {
+        name: 'CrossNFT',
+        description: 'CrossNFT',
+        url: 'https://crossnft.io',
+        icons: ['https://crossnft.io/logo.png'],
+      },
+      'light',
+      crossTestnet
+    );
+    setSdk(_sdk);
+  }, []);
+
+  if (!sdk) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <Router>
       <AppContainer>

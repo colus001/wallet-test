@@ -1,37 +1,15 @@
 import {
   ConnectionController,
   crossTestnet,
-  initCrossSdk,
   useAppKit,
   useAppKitAccount,
 } from '@to-nexus/sdk/react';
 // import { useAppKit } from '@to-nexus/sdk/react';
 import { addMinutes } from 'date-fns';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { generateNonce, SiweMessage } from 'siwe';
 
 const Home = () => {
-  const [sdk, setSdk] = useState<ReturnType<typeof initCrossSdk> | undefined>(
-    undefined
-  );
-  console.log('crossTestnet:', crossTestnet);
-  console.log('sdk:', sdk);
-  useEffect(() => {
-    const _sdk = initCrossSdk(
-      'ab32dee70a305921c0bbb353b321da3b',
-      'http://localhost:5174',
-      {
-        name: 'CrossNFT',
-        description: 'CrossNFT',
-        url: 'https://crossnft.io',
-        icons: ['https://crossnft.io/logo.png'],
-      },
-      'light',
-      crossTestnet
-    );
-    setSdk(_sdk);
-  }, []);
-
   const [siweMessage, setSiweMessage] = useState<SiweMessage | undefined>(
     undefined
   );
